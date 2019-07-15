@@ -21,10 +21,11 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
-app.get("/", function(req, res) {
-  axios.get("http://www.echojs.com/").then(function(response) {
+app.get("/", (req, res) => {
+  axios.get("http://www.echojs.com/").then(response => {
     let $ = cheerio.load(response.data);
 
+    let resultArray = [];
     $("article h2").each(function(i, element) {
       let result = {};
 
@@ -36,17 +37,25 @@ app.get("/", function(req, res) {
         .children("a")
         .attr("href");
 
-      // TODO: Search for article with same title. If found, don't add it.
-      db.Article.create(result)
-        .then(function(dbArticle) {
-          console.log(dbArticle);
+      db.Article.findOne({ title: result.title })
+        .then(dbArticle => {
+          if (!dbArticle) {
+            console.log(result);
+            db.Article.create(result)
+              .then(dbArticle => {
+                resultArray.push(result);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
         })
-        .catch(function(err) {
-          console.log(err);
+        .catch(err => {
+          res.json(err);
         });
     });
 
-    res.render("index");
+    res.render("index", resultArray);
   });
 });
 
