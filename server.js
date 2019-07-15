@@ -72,7 +72,6 @@ app.get("/comments/:id", function(req, res) {
   db.Article.findOne({ _id: req.params.id })
     .populate("notes")
     .then(function(dbArticle) {
-      console.log(dbArticle);
       res.render("comments", { dbArticle });
     })
     .catch(function(err) {
@@ -80,21 +79,13 @@ app.get("/comments/:id", function(req, res) {
     });
 });
 
-// Route for saving/updating an Article's associated Note
-app.post("/articles/:id", function(req, res) {
+app.post("/comments/:id", function(req, res) {
   db.Note.create(req.body)
     .then(function(dbNote) {
-      console.log(req.params.id);
-      console.log(dbNote._id);
-      // return db.Article.findOneAndUpdate({_id : req.params.id }, { $set: {title: "This is a great title" }}, { new: true });
-      return db.Article.findOneAndUpdate(
-        { _id: req.params.id },
-        { $set: { note: dbNote._id } },
-        { new: true }
-      );
+      return db.Article.findOneAndUpdate({_id : req.params.id }, { $push: {notes: dbNote._id }}, { new: true });
     })
     .then(function(dbArticle) {
-      res.json(dbArticle);
+      res.end();
     })
     .catch(function(err) {
       res.json(err);
