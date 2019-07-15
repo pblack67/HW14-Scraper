@@ -68,13 +68,12 @@ app.get("/", function(req, res) {
     });
 });
 
-// Route for grabbing a specific Article by id, populate it with it's note
-app.get("/articles/:id", function(req, res) {
+app.get("/comments/:id", function(req, res) {
   db.Article.findOne({ _id: req.params.id })
-    .populate("note")
+    .populate("notes")
     .then(function(dbArticle) {
       console.log(dbArticle);
-      res.json(dbArticle);
+      res.render("comments", { dbArticle });
     })
     .catch(function(err) {
       res.json(err);

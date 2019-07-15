@@ -5,10 +5,11 @@
         <div class="column col-16">
             <div class="card mt-1 mb-2" style="_width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title">{{title}}</h5>
-                    <button type="button" class="btn btn-primary" data-id={{_id}}>Comments</button>
+                    <a href={{link}} target="_blank" class="card-title">{{title}}</a>
+                    <a href="/comments/{{_id}}" class="btn btn-primary">Comments</a>
                 </div>
             </div>
         </div>
     </div>
     {{/each}}
+</div>
