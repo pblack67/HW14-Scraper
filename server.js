@@ -21,11 +21,10 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
-app.get("/", (req, res) => {
+app.get("/scrape", (req, res) => {
   axios.get("http://www.echojs.com/").then(response => {
     let $ = cheerio.load(response.data);
 
-    let resultArray = [];
     $("article h2").each(function(i, element) {
       let result = {};
 
@@ -38,12 +37,11 @@ app.get("/", (req, res) => {
         .attr("href");
 
       db.Article.findOne({ title: result.title })
-        .then(dbArticle => {
-          if (!dbArticle) {
-            console.log(result);
+        .then(dbFoundArticle => {
+          if (!dbFoundArticle) {
             db.Article.create(result)
               .then(dbArticle => {
-                resultArray.push(result);
+                console.log("Added new article " + dbArticle._id);
               })
               .catch(err => {
                 console.log(err);
@@ -51,25 +49,22 @@ app.get("/", (req, res) => {
           }
         })
         .catch(err => {
-          res.json(err);
+          console.log(err);
         });
     });
 
-    res.render("index", resultArray);
+    res.send("Scrape is complete, dude");
   });
 });
 
-// Route for getting all Articles from the db
-app.get("/articles", function(req, res) {
+app.get("/", function(req, res) {
   db.Article.find({})
-    .then(function(dbArticle) {
-      res.json(dbArticle);
+    .then(dbArticles => {
+      res.render("index", { dbArticles });
     })
-    .catch(function(err) {
+    .catch(err => {
       res.json(err);
     });
-
-  // TODO: Finish the route so it grabs all of the articles
 });
 
 // Route for grabbing a specific Article by id, populate it with it's note
