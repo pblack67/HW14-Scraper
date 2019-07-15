@@ -35,6 +35,7 @@ app.get("/scrape", (req, res) => {
       result.link = $(this)
         .children("a")
         .attr("href");
+      result.notes = [];
 
       db.Article.findOne({ title: result.title })
         .then(dbFoundArticle => {
