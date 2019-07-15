@@ -25,6 +25,7 @@ app.get("/scrape", (req, res) => {
   axios.get("http://www.echojs.com/").then(response => {
     let $ = cheerio.load(response.data);
 
+    let results = [];
     $("article h2").each(function(i, element) {
       let result = {};
 
@@ -37,24 +38,18 @@ app.get("/scrape", (req, res) => {
         .attr("href");
       result.notes = [];
 
-      db.Article.findOne({ title: result.title })
-        .then(dbFoundArticle => {
-          if (!dbFoundArticle) {
-            db.Article.create(result)
-              .then(dbArticle => {
-                console.log("Added new article " + dbArticle._id);
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      results.push(result);
     });
 
-    res.send("Scrape is complete, dude");
+    db.Article.create(results, { unordered: true })
+      .then(dbArticles => {
+        console.log("Added new articles" + dbArticles);
+        res.send("Scrape is complete, dude");
+      })
+      .catch(err => {
+        console.log(err);
+        res.send(err);
+      });
   });
 });
 
