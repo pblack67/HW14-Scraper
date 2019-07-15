@@ -82,7 +82,11 @@ app.get("/comments/:id", function(req, res) {
 app.post("/comments/:id", function(req, res) {
   db.Note.create(req.body)
     .then(function(dbNote) {
-      return db.Article.findOneAndUpdate({_id : req.params.id }, { $push: {notes: dbNote._id }}, { new: true });
+      return db.Article.findOneAndUpdate(
+        { _id: req.params.id },
+        { $push: { notes: dbNote._id } },
+        { new: true, useFindAndModify: false }
+      );
     })
     .then(function(dbArticle) {
       res.end();
@@ -90,6 +94,18 @@ app.post("/comments/:id", function(req, res) {
     .catch(function(err) {
       res.json(err);
     });
+});
+
+app.delete("/comments/:articleid/:commentid", function(req, res) {
+  db.Note.deleteOne({ _id: req.params.commentid }).then(dbNote => {
+    db.Article.findOneAndUpdate(
+      { _id: req.params.articleid },
+      { $pull: { notes: req.params.commentid } },
+      { useFindAndModify: false }
+    ).then(dbArticle => {
+      res.end();
+    });
+  });
 });
 
 app.listen(PORT, function() {

@@ -1,17 +1,23 @@
-{{dbArticle}}
-
-<h1 id="articleID" style="display:none">{{dbArticle._id}}</h1>
-
 <form>
-  <div class="form-group">
-    <label for="title">Title</label>
-    <input type="text" class="form-control" id="title">
-  </div>
-  <div class="form-group">
-    <label for="body">Comment</label>
-    <input type="textarea" class="form-control" id="body">
-  </div>
-  <button type="submit" class="btn btn-primary" id="submitButton">Add Comment</button>
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title">
+    </div>
+    <div class="form-group">
+        <label for="body">Comment</label>
+        <input type="textarea" class="form-control" id="body">
+    </div>
+    <button type="submit" class="btn btn-primary" id="submitButton">Add Comment</button>
 </form>
+
+{{#each dbArticle.notes}}
+<div class="card mt-1 mb-2" style="_width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{title}}</h5>
+        <p class="card-text">{{body}}</p>
+        <button type="button" class="btn btn-primary js-deleteComment" data-id={{_id}}>Delete</button>
+    </div>
+</div>
+{{/each}}
 
 <script type="text/javascript" src="/assets/js/comments.js"></script>

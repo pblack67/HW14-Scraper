@@ -12,3 +12,16 @@ $(document).on("click", "#submitButton", function(event) {
     location.reload();
   });
 });
+
+$(document).on("click", ".js-deleteComment", function(event) {
+    event.preventDefault();
+    let commentID = $(this).attr("data-id");
+    $.ajax({
+        url: location.href + "/" + commentID,
+        type: 'DELETE',
+        success: function(result) {
+            location.reload();
+        }
+    });
+  });
+  
