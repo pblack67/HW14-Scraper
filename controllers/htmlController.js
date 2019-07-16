@@ -4,22 +4,39 @@ const db = require("../models");
 
 module.exports = function(app) {
   app.get("/scrape", (req, res) => {
-    axios.get("http://www.echojs.com/").then(response => {
+    axios.get("https://www.dailyherald.com/entertainment/").then(response => {
+      //   console.log(response);
       let $ = cheerio.load(response.data);
 
       let results = [];
-      $("article h2").each(function(i, element) {
+      $(".secStoryBoxOdd").each(function(i, element) {
         let result = {};
 
         result.title = $(this)
-          .children("a")
+          .find(".secStoryHed")
+          .children("span")
           .text();
-        result.summary = "Dummy summary for the moment";
-        result.link = $(this)
-          .children("a")
-          .attr("href");
+        $(this)
+          .find(".secStoryBoxInner")
+          .find("span")
+          .each(function(index, element) {
+            if (index == 1) {
+              result.summary = $(this).text();
+            }
+          });
+        result.link =
+          "https://www.dailyherald.com" +
+          $(this)
+            .children("a")
+            .attr("href");
+        result.pictureLink =
+          "https://www.dailyherald.com" +
+          $(this)
+            .find("img")
+            .attr("src");
         result.notes = [];
 
+        console.log(result);
         results.push(result);
       });
 

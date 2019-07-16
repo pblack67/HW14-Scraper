@@ -1,10 +1,17 @@
 <div class="container">
+    <div class="text-center mb-3">
+        <h1>News Scraper Deluxe</h1>
+    </div>
     <div class="row">
         <div class="col-12">
-            <div class="card mt-3 mb-2">
-                <div class="card-body">
-                    <a href={{dbArticle.link}} target="_blank" class="card-title">{{dbArticle.title}}</a>
-                    <br>
+            <div class="card mt-1 mb-2">
+                <div class="card-horizontal">
+                    <img src={{dbArticle.pictureLink}} width="152" height="102" alt={{dbArticle.pictureLink}}>
+                    <div class="card-body">
+                        <a href={{dbArticle.link}} target="_blank" class="card-title">{{dbArticle.title}}</a>
+                        <br>
+                        <p>{{dbArticle.summary}}</p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,10 +4,17 @@ body {
   height: 500px;
 }
 
-h1, label {
-    color: white;
+h1,
+label {
+  color: white;
 }
 
 a {
-    font-size: 2em;
+  font-size: 2em;
 }
+
+.card-horizontal {
+  display: flex;
+  flex: 1 1 auto;
+}
+
