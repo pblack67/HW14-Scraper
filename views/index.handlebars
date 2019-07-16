@@ -1,11 +1,15 @@
 <div class="container">
-    <button type="button" class="btn btn-primary" id="scrape">Scrape!</button>
+    <div class="text-center mb-3" style="_width: 500px;">
+        <h1>News Scraper Deluxe</h1>
+        <button type="button" class="btn btn-primary" id="scrape">Scrape!</button>
+    </div>
     {{#each dbArticles}}
     <div class="row">
-        <div class="column col-16">
-            <div class="card mt-1 mb-2" style="_width: 18rem;">
+        <div class="col-12">
+            <div class="card mt-1 mb-2">
                 <div class="card-body">
                     <a href={{link}} target="_blank" class="card-title">{{title}}</a>
+                    <br>
                     <a href="/comments/{{_id}}" class="btn btn-primary">Comments</a>
                 </div>
             </div>

@@ -1,23 +1,42 @@
-<form>
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" class="form-control" id="title">
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mt-3 mb-2">
+                <div class="card-body">
+                    <a href={{dbArticle.link}} target="_blank" class="card-title">{{dbArticle.title}}</a>
+                    <br>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="body">Comment</label>
-        <input type="textarea" class="form-control" id="body">
-    </div>
-    <button type="submit" class="btn btn-primary" id="submitButton">Add Comment</button>
-</form>
+    <div class="row">
+        <div class="col-6">
+            {{#each dbArticle.notes}}
+            <div class="card mt-1 mb-2" style="_width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{title}}</h5>
+                    <p class="card-text">{{body}}</p>
+                    <button type="button" class="btn btn-primary js-deleteComment" data-id={{_id}}>Delete</button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="col-6">
+            <form class="mb-3">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title">
+                </div>
+                <div class="form-group">
+                    <label for="body">Comment</label>
+                    <input type="textarea" class="form-control" id="body">
+                </div>
+                <button type="submit" class="btn btn-primary" id="submitButton">Add Comment</button>
+                <a href="/" class="btn btn-primary">Back to Scraping</button>
+            </form>
+        </div>
 
-{{#each dbArticle.notes}}
-<div class="card mt-1 mb-2" style="_width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">{{title}}</h5>
-        <p class="card-text">{{body}}</p>
-        <button type="button" class="btn btn-primary js-deleteComment" data-id={{_id}}>Delete</button>
     </div>
 </div>
-{{/each}}
 
 <script type="text/javascript" src="/assets/js/comments.js"></script>
