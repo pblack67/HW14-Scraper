@@ -53,7 +53,7 @@ module.exports = function(app) {
   });
 
   app.get("/", function(req, res) {
-    db.Article.find({})
+    db.Article.find({}).sort({_id: -1})
       .then(dbArticles => {
         res.render("index", { dbArticles });
       })
