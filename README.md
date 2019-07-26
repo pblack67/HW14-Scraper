@@ -8,6 +8,9 @@
 
 [https://youtu.be/3qs6iDNj5MM](https://youtu.be/3qs6iDNj5MM)
 
+![Scraping](/images/scraper.png)
+![Comments](/images/comments.png)
+
 ### To run the application:
 
 * npm start
